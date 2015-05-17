@@ -12,8 +12,14 @@ function beca_add_content($content){
 	if ( ! isset( $beca_options['enable'] ) ) {
 			$beca_options['enable'] = 0;
 	}
-	
-	// check to see which post types have been selected and store them into the array $selected_post_types.
+
+	if ( ! isset( $beca_options['top'] ) ) {
+							$beca_options['top'] = 0;
+	}
+	if ( ! isset( $beca_options['bottom'] ) ) {
+		$beca_options['bottom'] = 0;
+	}
+	// check to see which post types have been selected and store them into the array $selected_post_types
 	$selected_post_types = array();
 	foreach ( $post_types as $post_type ) { 
 
@@ -26,15 +32,27 @@ function beca_add_content($content){
 		}
 	 }
 	
+	// display content if a post type is chosen and if the enable option is selected
+	if( in_array(get_post_type(), $selected_post_types) && $beca_options['enable'] == 1 ){
 
-	if( 
-		
-		in_array(get_post_type(), $selected_post_types) &&
-		$beca_options['enable'] == 1  
-	){
-		
-		$content .= $beca_options['added_content'];
+		// display content at top or bottom of content....or both top and bottom
+		if ($beca_options['bottom'] == 1 && $beca_options['top'] == 0 ){
+			$content .= $beca_options['added_content'];
+		}	
+		elseif( $beca_options['top'] == 1 && $beca_options['bottom'] == 0 ){
+			$content = $beca_options['added_content'] . $content;
+		}
+		elseif( $beca_options['top'] == 1 && $beca_options['bottom'] == 1 ){
+			$content = $beca_options['added_content'] . $content . $beca_options['added_content'];
+		} else {
+			$content = $content;
+		}
 	}
+
+		
+
+		// add to top of content
+		// 	
 
 	return $content;
 }

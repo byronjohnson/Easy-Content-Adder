@@ -8,9 +8,25 @@
 		// start HTML
 		ob_start(); ?>
 		<div class="wrap">	
-			<h2>My First WordPress Plugin Options</h2>
+			<h2>Easy Content Adder Options</h2>
 			<form method="post" action="options.php">
 				<?php settings_fields('beca_settings_group'); ?>
+
+				<h4><?php _e('Enable', 'beca_domain' ); ?></h4>
+				<p>
+					<?php 
+						// If "Turn content on" is not selected, set input value to
+						if ( ! isset( $beca_options['enable'] ) )
+							$beca_options['enable'] = 0;
+						?>
+					<input id="beca_settings[enable]" name="beca_settings[enable]" type="checkbox" value="1" <?php checked($beca_options['enable'], '1', true ); ?> />
+					<label class="description" for="beca_settings[enable]">
+						<?php _e('Turn content on.', 'beca_domain'); ?>
+					</label>
+
+				</p>
+
+				<hr class="beca_divider" />
 
 				<h4><?php _e('Select which type of pages to display content on.', 'beca_domain' ); ?></h4>
 				<?php 
@@ -34,21 +50,30 @@
 
 				<hr class="beca_divider" />
 
-				<h4><?php _e('Enable', 'beca_domain' ); ?></h4>
+				<h4><?php _e('Select whether to add to top or bottom of post/pages. You can also select both to have the content show at the top and bottom.', 'beca_domain' ); ?></h4>
 				<p>
 					<?php 
 						// If "Turn content on" is not selected, set input value to
-						if ( ! isset( $beca_options['enable'] ) )
-							$beca_options['enable'] = 0;
+						if ( ! isset( $beca_options['top'] ) )
+							$beca_options['top'] = 0;
+						if ( ! isset( $beca_options['bottom'] ) )
+							$beca_options['bottom'] = 0;
 						?>
-					<input id="beca_settings[enable]" name="beca_settings[enable]" type="checkbox" value="1" <?php checked($beca_options['enable'], '1', true ); ?> />
-					<label class="description" for="beca_settings[enable]">
-						<?php _e('Turn content on.', 'beca_domain'); ?>
+					<input id="beca_settings[top]" name="beca_settings[top]" type="checkbox" value="1" <?php checked($beca_options['top'], '1', true ); ?> />
+					<label class="description" for="beca_settings[top]">
+						<?php _e('Add to top', 'beca_domain'); ?>
+					</label>
+					<br/>
+					<input id="beca_settings[bottom]" name="beca_settings[bottom]" type="checkbox" value="1" <?php checked($beca_options['bottom'], '1', true ); ?> />
+					<label class="description" for="beca_settings[bottom]">
+						<?php _e('Add to bottom', 'beca_domain'); ?>
 					</label>
 
 				</p>
 
 				<hr class="beca_divider" />
+
+				
 
 				<h4><?php _e('Enter content below', 'beca_domain' ); ?></h4>
 				<?php 
@@ -79,7 +104,7 @@
 
 	// create options page under settings menu
 	function beca_add_options_link() {
-		add_options_page('My First Wordpress Plugin Options', 'Easy Content Adder', 'manage_options', 'beca-options','beca_options_page' );
+		add_options_page('Easy Content Adder Options', 'Easy Content Adder', 'manage_options', 'beca-options','beca_options_page' );
 	}
 
 	add_action('admin_menu', 'beca_add_options_link');
