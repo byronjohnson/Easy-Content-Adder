@@ -5,6 +5,7 @@
 
 		global $beca_options;
 
+		// start HTML
 		ob_start(); ?>
 		<div class="wrap">	
 			<h2>My First WordPress Plugin Options</h2>
@@ -17,9 +18,9 @@
 					global $post_types; 
 
 					foreach ( $post_types as $post_type ) { ?>
-					  <!--  echo '<p>' . $post_type . '</p>'; -->
 
 					   <?php 
+					   // If no post type is selected, set input value to 0
 						if ( ! isset( $beca_options[$post_type] ) )
 							$beca_options[$post_type] = 0;
 						?>
@@ -36,6 +37,7 @@
 				<h4><?php _e('Enable', 'beca_domain' ); ?></h4>
 				<p>
 					<?php 
+						// If "Turn content on" is not selected, set input value to
 						if ( ! isset( $beca_options['enable'] ) )
 							$beca_options['enable'] = 0;
 						?>
@@ -54,6 +56,7 @@
 					$args = array("textarea_name" => "beca_settings[added_content]");
 					$editor_id = 'added_content';
 
+					// If editor is has no content, set the content area to blank
 					if ( ! isset( $beca_options['added_content'] ) ) {
 						$beca_options['added_content'] = " ";
 					}
@@ -67,7 +70,10 @@
 			</form>
 		</div>
 	
-		<?php echo  ob_get_clean();
+
+		<?php 
+		// Outpout HTML
+		echo ob_get_clean();
 
 	}
 
@@ -78,7 +84,7 @@
 
 	add_action('admin_menu', 'beca_add_options_link');
 
-
+	// register options page under settings menu
 	function beca_register_settings(){
 		register_setting('beca_settings_group', 'beca_settings');
 	}
