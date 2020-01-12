@@ -12,15 +12,15 @@ An option is provided that will allow you chose whether the content is displayed
 3. Configure the plugin by going to the Settings > Easy Content Adder link that appears in your admin menu
 
 ## Changelog
-## 1.1.0 - 2020-01-12
+### 1.1.0 - 2020-01-12
 - Restructured plugin architecture.
 
-## 1.0.2 - 2015-12-06
+### 1.0.2 - 2015-12-06
 - Added conditionals to ensure the added content does not show on blog feed pages.
 
-## 1.0.1 - 2015-21-05
+### 1.0.1 - 2015-21-05
 - Fixed bug causing custom post types to not register.
 - Removed unnecessary white spaces.
 
-## 1.0 - 2015-20-05
+### 1.0 - 2015-20-05
 - Initial version.
