@@ -14,8 +14,6 @@
 
  	// content shown on settings page 
 	$public_display = new Easy_Content_Adder_Admin_Display();
-	$render_results = $public_display->render_results();
-	
-	return $render_results;
+	$public_display->render_results();
 	
 ?>
