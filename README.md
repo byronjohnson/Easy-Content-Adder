@@ -22,5 +22,5 @@ An option is provided that will allow you chose whether the content is displayed
 - Fixed bug causing custom post types to not register. 
 - Removed unnecessary white spaces.
 
-# 1.0 - 2015-20-05
+## 1.0 - 2015-20-05
 - Initial version
