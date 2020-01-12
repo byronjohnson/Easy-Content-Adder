@@ -3,8 +3,8 @@ Contributors: byronj
 Donate link: http://byronj.me/donate
 Tags: content, posts, pages, post types
 Requires at least: 3.5
-Tested up to: 4.2.2
-Stable tag: 1.0.2
+Tested up to: 5.3.2
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,12 +22,15 @@ An option is provided that will allow you chose whether the content is displayed
 
 == Changelog ==
 
-= 1.0.2 =
+= 1.1.0 - 2020-01-12 =
 * Added conditionals to ensure the added content does not show on blog feed pages
 
-= 1.0.1 =
+= 1.0.2 - 2015-12-06 =
+* Added conditionals to ensure the added content does not show on blog feed pages
+
+= 1.0.1 - 2015-21-05 =
 * Fixed bug causing custom post types to not register. 
 * Removed unnecessary white spaces.
 
-= 1.0 =
+= 1.0 - 2015-20-05 =
 Initial version
