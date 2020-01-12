@@ -1,0 +1,8 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+ hr.beca_divider {
+	margin: 3em 0 2em 0;
+}
