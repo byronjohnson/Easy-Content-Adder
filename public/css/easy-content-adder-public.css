@@ -1,0 +1,13 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+
+.twitter-message {
+	color: blue;
+}
+
+hr {
+	margin: 2em 0;
+}
