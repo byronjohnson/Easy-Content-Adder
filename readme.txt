@@ -16,7 +16,7 @@ Easy Content Adder allows you to add custom content via a native WordPress edito
 All text, links, and media attachments can be added to the custom content. If you can add it to a WordPress Page or Post, it can be added via Easy Content Adder. 
 
 == Features =
-* Hide the content from all posts without the need to remove your content or disable the plugin.
+* Hide the content from all posts without having to delete your content or disable the plugin.
 * Choose which post types to display the content on.
 * Display the content only on posts that have been tagged with select categories or taxonomies. 
 * Chose whether display the content at the bottom and/or top of all posts.
