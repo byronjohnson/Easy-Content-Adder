@@ -1,33 +1,47 @@
 === Easy Content Adder ===
 Contributors: byronj
-Donate link: http://byronj.me/donate
+Donate link: https://www.paypal.me/byrondonate
 Tags: content, posts, pages, post types
 Requires at least: 3.5
-Tested up to: 4.2.2
-Stable tag: 1.0.2
+Tested up to: 5.3.2
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A WordPress plugin to easily add content to all of your Pages, Posts, and Custom Post Types.
+A WordPress plugin to easily add custom content to all of your Pages, Posts, and Custom Post Types.
 
 == Description ==
-Easy Content Adder allows you to add custom content via a native WordPress editor and display the content at the top or bottom of all posts, pages, or both. The plugin also supports all custom post types and provides the ability to hide the content from all pages without the need to remove your content or disable the plugin. All text, links, and media attachments can be added to the custom content. If you can add it to a WordPress Page or Post, it can be added via Easy Content Adder. 
+Easy Content Adder allows you to add custom content via a native WordPress editor and display the content at the top or bottom of all posts, pages, or both. 
 
-An option is provided that will allow you chose whether the content is displayed at the bottom or top of all pages.
+All text, links, and media attachments can be added to the custom content. If you can add it to a WordPress Page or Post, it can be added via Easy Content Adder. 
+
+== Features =
+* Hide the content from all posts without the need to remove your content or disable the plugin.
+* Choose which post types to display the content on.
+* Display the content only on posts that have been tagged with select categories or taxonomies. 
+* Chose whether display the content at the bottom and/or top of all posts.
+
+
 
 == Installation ==
-1. Upload the easy-content-adder folder to the /wp-content/plugins/ directory
-2. Activate the Easy Content Adder plugin through the 'Plugins' menu in WordPress
-3. Configure the plugin by going to the Settings > Easy Content Adder link that appears in your admin menu
+1. Upload the easy-content-adder folder to the /wp-content/plugins/ directory.
+2. Activate the Easy Content Adder plugin through the 'Plugins' menu in WordPress.
+3. Configure the plugin by going to the Settings > Easy Content Adder link that appears in your admin menu.
 
 == Changelog ==
 
-= 1.0.2 =
-* Added conditionals to ensure the added content does not show on blog feed pages
+= 1.1.1 - 2020-01-25 =
+* Added an option to display the content on selected categories and taxonomies.
 
-= 1.0.1 =
-* Fixed bug causing custom post types to not register. 
+= 1.1.0 - 2020-01-12 =
+* Restructured plugin architecture.
+
+= 1.0.2 - 2015-12-06 =
+* Added conditionals to ensure the added content does not show on blog feed pages.
+
+= 1.0.1 - 2015-21-05 =
+* Fixed bug causing custom post types to not register.
 * Removed unnecessary white spaces.
 
-= 1.0 =
-Initial version
+= 1.0 - 2015-20-05 =
+Initial version.
