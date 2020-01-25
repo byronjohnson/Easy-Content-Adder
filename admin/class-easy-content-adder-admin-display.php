@@ -24,10 +24,9 @@ class Easy_Content_Adder_Admin_Display {
 
     // Properties
     private $beca_options;
-    private $enable;
-    private $top;
-    private $bottom;
     private $post_types;
+    private $categories;
+    private $category_names;
 	
 
 	/**
@@ -37,10 +36,11 @@ class Easy_Content_Adder_Admin_Display {
 	 */
 	public function __construct() {
         $this->beca_options = get_option('beca_settings');
-        $this->enable = $this->beca_options['enable'];
-        $this->bottom = $this->beca_options['bottom'];
-        $this->top = $this->beca_options['top'];
         $this->post_types = get_post_types(array('public' => true));
+        $this->categories = get_terms(array(
+            'hide_empty' => false,
+        ));
+        $this->category_names = $this->get_term_names($this->categories);
 
     }
 
@@ -54,7 +54,7 @@ class Easy_Content_Adder_Admin_Display {
         ob_start();
 
         ?>
-            <h4><?php _e('Enable', 'beca_domain' ); ?></h4>
+            <h3><?php _e('Enable', 'beca_domain' ); ?></h3>
             <p>
                 <?php 
                     // If "Turn content on" is not selected, set input value to
@@ -63,7 +63,7 @@ class Easy_Content_Adder_Admin_Display {
                     ?>
                 <input id="beca_settings[enable]" name="beca_settings[enable]" type="checkbox" value="1" <?php checked($this->beca_options['enable'], '1', true ); ?> />
                 <label class="description" for="beca_settings[enable]">
-                    <?php _e('Turn content on.', 'beca_domain'); ?>
+                    <?php _e('Turn the content on.', 'beca_domain'); ?>
                 </label>
 
             </p>
@@ -72,32 +72,63 @@ class Easy_Content_Adder_Admin_Display {
         echo ob_get_clean();
     }
 
+
+    /**
+	 * Creates an array of term names
+	 *
+	 * @since    1.1.1
+	 */
+    public function get_term_names($terms){
+        $new_terms = array();
+        foreach($terms as $term){
+            array_push( $new_terms, $term->name );
+        }
+
+        return $new_terms;
+    }
+    
+
     /**
 	 * Creates Post Type checkbox options
 	 *
 	 * @since    1.1.0
 	 */
-    public function render_post_type_options(){
+    public function render_checkbox_options($item_array, $section_title, $is_post_types){
         ob_start();
         ?>
-            <h4><?php _e('Select which type of pages to display content on.', 'beca_domain' ); ?></h4>
-				<?php // get all post types that are public
-					
+                <h4><?php _e($section_title, 'beca_domain' ); ?></h4>
+				<?php 
+			
+					foreach ( $item_array as $item ) { 
 
-					foreach ( $this->post_types as $post_type ) { 
 					   // If no post type is selected, set input value to 0
-						if ( ! isset( $this->beca_options[$post_type] ) )
-							$this->beca_options[$post_type] = 0;
-						?>
-					<input id="beca_settings[<?php echo $post_type ?>]" name="beca_settings[<?php echo $post_type ?>]" type="checkbox" value="1" <?php checked($this->beca_options[$post_type], '1', true ); ?> />
-					<label class="description" for="beca_settings[<?php echo $post_type ?>]">
-						<?php _e($post_type, 'beca_domain'); ?>
-					</label>
-					<br/>
+						if ( ! isset( $this->beca_options[$item] ) ) {
+                            $this->beca_options[$item] = 0;
+                        }
+
+                        // If is post types, get the plural name instead
+                        if($is_post_types){
+                            $post_type_name = get_post_type_object($item);
+                            $plural_name = $post_type_name->labels->name;
+                        }
+				?>
+                        <div class="checkbox-container">
+                            <input id="beca_settings[<?php echo $item ?>]" name="beca_settings[<?php echo $item ?>]" type="checkbox" value="1" <?php checked($this->beca_options[$item], '1', true ); ?> />
+                            <label class="description" for="beca_settings[<?php echo $item ?>]">
+                                <?php
+                                    if($is_post_types){
+                                        echo $plural_name;
+                                    } else {
+                                        _e(ucfirst($item), 'beca_domain'); 
+                                    }
+                                ?>
+                            </label>
+                        </div>
 					<?php }
                 
         echo ob_get_clean();
     }
+    
 
 
     /**
@@ -108,7 +139,7 @@ class Easy_Content_Adder_Admin_Display {
     public function render_top_bottom_option(){
         ob_start();
         ?>
-        <h4><?php _e('Select whether to add to top or bottom of post/pages. You can also select both to have the content show at the top and bottom.', 'beca_domain' ); ?></h4>
+        <h4><?php _e('Select where to place the content on each post.', 'beca_domain' ); ?></h4>
 				<p>
 					<?php 
 						// If "Turn content on" is not selected, set input value to
@@ -117,15 +148,18 @@ class Easy_Content_Adder_Admin_Display {
 						if ( ! isset( $this->beca_options['bottom'] ) )
 							$this->beca_options['bottom'] = 0;
 						?>
-					<input id="beca_settings[top]" name="beca_settings[top]" type="checkbox" value="1" <?php checked($this->beca_options['top'], '1', true ); ?> />
-					<label class="description" for="beca_settings[top]">
-						<?php _e('Add to top', 'beca_domain'); ?>
-					</label>
-					<br/>
-					<input id="beca_settings[bottom]" name="beca_settings[bottom]" type="checkbox" value="1" <?php checked($this->beca_options['bottom'], '1', true ); ?> />
-					<label class="description" for="beca_settings[bottom]">
-						<?php _e('Add to bottom', 'beca_domain'); ?>
-					</label>
+                    <div class="checkbox-container">
+                        <input id="beca_settings[top]" name="beca_settings[top]" type="checkbox" value="1" <?php checked($this->beca_options['top'], '1', true ); ?> />
+                        <label class="description" for="beca_settings[top]">
+                            <?php _e('Add to the top of each post.', 'beca_domain'); ?>
+                        </label>
+                    </div>
+                    <div class="checkbox-container">
+                        <input id="beca_settings[bottom]" name="beca_settings[bottom]" type="checkbox" value="1" <?php checked($this->beca_options['bottom'], '1', true ); ?> />
+                        <label class="description" for="beca_settings[bottom]">
+                            <?php _e('Add to the bottom of each post.', 'beca_domain'); ?>
+                        </label>
+                    </div>
 
                 </p>
         <?php
@@ -143,7 +177,7 @@ class Easy_Content_Adder_Admin_Display {
         ob_start();
 
     ?>
-                <h4><?php _e('Enter content below', 'beca_domain' ); ?></h4>
+                <h3 style="margin-bottom: 15px;"><?php _e('Enter the content below', 'beca_domain' ); ?></h3>
 				<?php 
 					$content = 'beca_settings[added_content]';
 					$args = array("textarea_name" => "beca_settings[added_content]");
@@ -181,10 +215,17 @@ class Easy_Content_Adder_Admin_Display {
 
                         <hr class="beca_divider" />
 
-                        <?php $this->render_post_type_options(); ?>
-                    
+                        <h3><?php  _e('Post Types') ?></h3>
+                        <?php $this->render_checkbox_options($this->post_types, 'Select which type of posts to display the content on.', true); ?>
+
                         <hr class="beca_divider" />
 
+                        <h3><?php  _e('Categories and Taxonomies') ?></h3>
+                        <?php $this->render_checkbox_options($this->category_names, 'Select which categories and/or taxonomies to display the content on. These options will apply if Posts or a custom post type is selected above.', false); ?>
+
+                        <hr class="beca_divider" />
+
+                        <h3><?php  _e('Content Location') ?></h3>
                         <?php $this->render_top_bottom_option(); ?>
 
                         <hr class="beca_divider" />
@@ -195,6 +236,7 @@ class Easy_Content_Adder_Admin_Display {
             </div>
                     
         <?php 
+        
 		// Outpout HTML
 		echo ob_get_clean();
     }

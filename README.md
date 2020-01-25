@@ -2,9 +2,15 @@
 A WordPress plugin to easily add content to all of your Pages, Posts, and Custom Post Types.
 
 ## Description
-Easy Content Adder allows you to add custom content via a native WordPress editor and display the content at the top or bottom of all posts, pages, or both. The plugin also supports all custom post types and provides the ability to hide the content from all pages without the need to remove your content or disable the plugin. All text, links, and media attachments can be added to the custom content. If you can add it to a WordPress Page or Post, it can be added via Easy Content Adder. 
+Easy Content Adder allows you to add custom content via a native WordPress editor and display the content at the top or bottom of all posts, pages, or both. 
 
-An option is provided that will allow you chose whether the content is displayed at the bottom or top of all pages.
+All text, links, and media attachments can be added to the custom content. If you can add it to a WordPress Page or Post, it can be added via Easy Content Adder. 
+
+## Features
+- Hide the content from all posts without the need to remove your content or disable the plugin.
+- Choose which post types to display the content on.
+- Display the content only on posts that have been tagged with select categories or taxonomies. 
+- Chose whether display the content at the bottom and/or top of all posts.
 
 ## Installation
 1. Upload the easy-content-adder folder to the /wp-content/plugins/ directory
@@ -12,6 +18,9 @@ An option is provided that will allow you chose whether the content is displayed
 3. Configure the plugin by going to the Settings > Easy Content Adder link that appears in your admin menu
 
 ## Changelog
+### 1.1.1 - 2020-01-25
+- Added an option to display the content on selected categories and taxonomies.
+
 ### 1.1.0 - 2020-01-12
 - Restructured plugin architecture.
 
