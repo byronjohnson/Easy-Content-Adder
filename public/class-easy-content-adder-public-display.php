@@ -20,8 +20,7 @@
  * @subpackage Easy_Content_Adder/public
  * @author     Byron Johnson <me@byronj.me>
  */
-class Easy_Content_Adder_Public_Display
-{
+class Easy_Content_Adder_Public_Display {
 
     // Properties
     private $beca_options;
@@ -36,15 +35,13 @@ class Easy_Content_Adder_Public_Display
     private $selected_category_names;
 
     // Constructor
-    public function __construct()
-    {
+    public function __construct() {
         $this->beca_options = get_option('beca_settings');
 
         if(isset($this->beca_options['enable'])){
             $this->enable = $this->beca_options['enable'];
         }
         
-
         if(isset($this->beca_options['bottom'])){
             $this->bottom = $this->beca_options['bottom'];
         }
@@ -53,9 +50,6 @@ class Easy_Content_Adder_Public_Display
             $this->top = $this->beca_options['top'];
         }
         
-        
-        $this->post_types = get_post_types(array('public' => true));
-        $this->selected_post_types = $this->get_selected_options($this->post_types);
         $this->categories = get_terms();
         $this->category_names = $this->get_term_names($this->categories);
         $this->selected_category_names = $this->get_selected_options($this->category_names);
@@ -66,8 +60,7 @@ class Easy_Content_Adder_Public_Display
      *
      * @since    1.1.0
      */
-    public function set_properties()
-    {
+    public function set_properties() {
         if (!isset($this->enable)) {
             $this->enable = 0;
         }
@@ -81,12 +74,24 @@ class Easy_Content_Adder_Public_Display
     }
 
     /**
+	 * Get all post types on the site
+	 *
+	 * @since    1.1.2
+	 */
+
+    public function get_site_post_types() {
+        $site_post_types = get_post_types(array('public' => true));
+        return $site_post_types;
+    }
+
+    /**
 	 * Creates an array of term names
 	 *
 	 * @since    1.1.1
 	 */
-    public function get_term_names($terms){
+    public function get_term_names($terms) {
         $new_terms = array();
+        
         foreach($terms as $term){
             array_push( $new_terms, $term->name );
         }
@@ -99,14 +104,28 @@ class Easy_Content_Adder_Public_Display
      *
      * @since    1.1.0
      */
-    public function modify_content($content)
-    {
+    public function modify_content($content) {
+
+        // Store the original content
+        $base_content = $content;
+        $post_type_categories_enabled = 0;
+
+        // Post type of current post
+        $this_posts_post_type = get_post_type();
+
+        // Check if the Post Types categories/taxonomies option is enabled
+        if(isset($this->beca_options['enable-' . $this_posts_post_type])){
+            $post_type_categories_enabled = $this->beca_options['enable-' . $this_posts_post_type];
+        }
+
+        $this_post_type_taxonomies = get_object_taxonomies($this_posts_post_type);
+
+        $site_post_types = $this->get_site_post_types();
+        $this->selected_post_types = $this->get_selected_options($site_post_types);
 
         // display content if a post type is chosen and if the enable option is selected
         if (in_array(get_post_type(), $this->selected_post_types) && $this->enable == 1) {
 
-            // Store the original content
-            $base_content = $content;
 
             // display content at top or bottom of content....or both top and bottom
             if ($this->bottom == 1 && $this->top == 0) {
@@ -121,11 +140,14 @@ class Easy_Content_Adder_Public_Display
 
         }
 
-        // Begin check if post is single and has matching terms
-        if(is_single()){
+        // Begin check if post is a single post type, has registered taxonomies, and has the category option enabled
+        if(is_single() && !empty($this_post_type_taxonomies) && $post_type_categories_enabled){
+            
             $this_post_categories = get_the_category();
             $site_taxonomies = get_taxonomies();
             $this_post_terms = array();
+            $category_matches = array();
+            $term_matches = array();
             
         
             // Check if the current post has a matched category in the category options
@@ -150,7 +172,7 @@ class Easy_Content_Adder_Public_Display
             }
 
             // If there are matching categories or terms, show the updated content. otherwise, show the original content
-            if($category_matches || $term_matches){
+            if( $category_matches || $term_matches){
                 return $content;
             } else {
                 return $base_content;
@@ -184,13 +206,13 @@ class Easy_Content_Adder_Public_Display
         return $new_array;
     }
 
+
     /**
      * Builds final layout
      *
      * @since    1.1.0
      */
-    public function build_results($content)
-    {
+    public function build_results($content) {
 
         $this->set_properties();
 
@@ -206,8 +228,7 @@ class Easy_Content_Adder_Public_Display
      *
      * @since    1.1.0
      */
-    public function render_results()
-    {
+    public function render_results() {
         add_filter('the_content', [$this, 'build_results']);
     }
 

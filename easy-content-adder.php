@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Easy Content Adder
  * Description:       Easily add content to all of your Pages, Posts, and Custom Post Types.
- * Version:           1.1.1
+ * Version:           1.1.2
  * Author:            Byron Johnson
  * Author URI:        https://byronj.me
  * License:           GPL-2.0+
@@ -31,10 +31,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.1.0 and use SemVer - https://semver.org
+ * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'EASY_CONTENT_ADDER_VERSION', '1.1.1' );
+define( 'EASY_CONTENT_ADDER_VERSION', '1.1.2' );
 
 
 /****************************

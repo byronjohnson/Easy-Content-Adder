@@ -3,7 +3,8 @@
  * included in this file.
  */
 
- hr.beca_divider {
+
+hr.beca_divider {
 	margin: 3em 0 2em 0;
 }
 
@@ -20,5 +21,33 @@ h3 {
 }
 
 h4 {
+	font-weight: 400;
 	margin-top: 5px;
+}
+
+h4.post-type-name {
+	margin-bottom: 5px;
+}
+
+.post-type-groups {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	    flex-wrap: wrap;
+	-webkit-box-pack: start;
+	    -ms-flex-pack: start;
+	        justify-content: flex-start;
+}
+
+.post-type-group {
+	-ms-flex-preferred-size: 25%;
+	    flex-basis: 25%;
+	margin-bottom: 30px;
+}
+
+.post-type-group hr {
+	margin-left: 0;
+	max-width: 70%;
+	text-align: left;
 }

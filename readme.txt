@@ -30,6 +30,12 @@ All text, links, and media attachments can be added to the custom content. If yo
 
 == Changelog ==
 
+= 1.1.2 - 2020-01-25 =
+* Fixed an issue that prevented custom post type options from displaying.
+* Grouped category and taxonomy options within their post type.
+* Set the content to display on all posts if a category or taxonomy is not selected.
+* Added an enable button to category and taxonomy filtering options.
+
 = 1.1.1 - 2020-01-25 =
 * Added an option to display the content on selected categories and taxonomies.
 

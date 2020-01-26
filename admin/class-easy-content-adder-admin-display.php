@@ -24,7 +24,6 @@ class Easy_Content_Adder_Admin_Display {
 
     // Properties
     private $beca_options;
-    private $post_types;
     private $categories;
     private $category_names;
 	
@@ -36,13 +35,58 @@ class Easy_Content_Adder_Admin_Display {
 	 */
 	public function __construct() {
         $this->beca_options = get_option('beca_settings');
-        $this->post_types = get_post_types(array('public' => true));
+        
         $this->categories = get_terms(array(
             'hide_empty' => false,
         ));
+        
         $this->category_names = $this->get_term_names($this->categories);
 
     }
+
+    /**
+	 * Get all post types on the site
+	 *
+	 * @since    1.1.1
+	 */
+
+    public function get_site_post_types() {
+        $site_post_types = get_post_types(array('public' => true));
+        return $site_post_types;
+    }
+
+
+    /**
+	 * Get all taxonomy terms for a post type
+	 *
+	 * @since    1.1.2
+	 */
+
+    public function get_post_terms($this_post_type) {
+        if($this_post_type){
+            $full_term_list = array();
+            $this_post_taxonomies = get_object_taxonomies($this_post_type);
+
+            foreach($this_post_taxonomies as $taxonomy){
+                
+                if($taxonomy != 'post_tag'){
+                    $tax_terms = get_terms(array(
+                        'taxonomy' => $taxonomy,
+                        'hide_empty' => false,
+                    )); 
+
+                    foreach($tax_terms as $term){
+                        array_push( $full_term_list, $term->name );
+                    }
+                }
+               
+            };
+
+            return $full_term_list;
+        }
+    }
+    
+
 
 
     /**
@@ -50,20 +94,23 @@ class Easy_Content_Adder_Admin_Display {
 	 *
 	 * @since    1.1.0
 	 */
-    public function render_enable_option(){
+    public function render_enable_option($option_name = 'enable', $show_header, $label_name){
         ob_start();
 
-        ?>
-            <h3><?php _e('Enable', 'beca_domain' ); ?></h3>
+         
+            if( $show_header){
+                echo '<h3>' . ucfirst($option_name) . '</h3>';
+            }
+        ?> 
             <p>
                 <?php 
                     // If "Turn content on" is not selected, set input value to
-                    if ( ! isset( $this->beca_options['enable'] ) )
-                        $this->beca_options['enable'] = 0;
+                    if ( ! isset( $this->beca_options[$option_name] ) )
+                        $this->beca_options[$option_name] = 0;
                     ?>
-                <input id="beca_settings[enable]" name="beca_settings[enable]" type="checkbox" value="1" <?php checked($this->beca_options['enable'], '1', true ); ?> />
-                <label class="description" for="beca_settings[enable]">
-                    <?php _e('Turn the content on.', 'beca_domain'); ?>
+                <input id="beca_settings[<?php echo $option_name ?>]" name="beca_settings[<?php echo $option_name ?>]" type="checkbox" value="1" <?php checked($this->beca_options[$option_name], '1', true ); ?> />
+                <label class="description" for="beca_settings[<? echo $option_name ?>]">
+                    <?php _e($label_name, 'beca_domain'); ?>
                 </label>
 
             </p>
@@ -95,8 +142,10 @@ class Easy_Content_Adder_Admin_Display {
 	 */
     public function render_checkbox_options($item_array, $section_title, $is_post_types){
         ob_start();
-        ?>
-                <h4><?php _e($section_title, 'beca_domain' ); ?></h4>
+        ?>  
+                <?php if(!empty($section_title)){
+                    echo '<h4>' .$section_title . '</h4>';
+                } ?>
 				<?php 
 			
 					foreach ( $item_array as $item ) { 
@@ -199,6 +248,7 @@ class Easy_Content_Adder_Admin_Display {
     
     public function build_form(){
         ob_start(); 
+        $site_post_types = $this->get_site_post_types();
     ?>
             <div class="wrap">	
                     <h2> 
@@ -211,17 +261,40 @@ class Easy_Content_Adder_Admin_Display {
                             settings_fields('beca_settings_group'); 
                         ?>
                         
-                        <?php $this->render_enable_option(); ?>
+                        <?php $this->render_enable_option('enable', true, 'Turn the content on.'); ?>
 
                         <hr class="beca_divider" />
 
                         <h3><?php  _e('Post Types') ?></h3>
-                        <?php $this->render_checkbox_options($this->post_types, 'Select which type of posts to display the content on.', true); ?>
+                        <?php $this->render_checkbox_options($site_post_types, 'Select which type of posts to display the content on.', true); ?>
 
                         <hr class="beca_divider" />
 
-                        <h3><?php  _e('Categories and Taxonomies') ?></h3>
-                        <?php $this->render_checkbox_options($this->category_names, 'Select which categories and/or taxonomies to display the content on. These options will apply if Posts or a custom post type is selected above.', false); ?>
+                        <h3><?php  _e('Categories and Taxonomies Names') ?></h3>
+                        <h4><?php _e('The content will display on all posts tagged with the selected categories and taxonomies. <br/> If the Enable option is not checked, the content will display on all of the posts for that post type.'); ?></h4>
+                        <div class="post-type-groups">
+                            <?php 
+                            // Build the category and taxonomies list
+                            foreach($site_post_types as $current_post_type){
+                                $current_post_terms = $this->get_post_terms($current_post_type);
+                                $post_type_name = get_post_type_object($current_post_type);
+                                $plural_name = $post_type_name->labels->name;   
+                                $post_type_lower = strtolower($current_post_type);
+
+                            
+                                if(!empty($current_post_terms)){
+                                    echo '<div class="post-type-group">';
+                                    echo '<h4 class="post-type-name">' . ucwords($plural_name) . '</h4>';
+
+                                        $this->render_enable_option('enable-'. $post_type_lower, false, 'Enable'  ); 
+                                        echo '<hr>';
+                                        $this->render_checkbox_options($current_post_terms, '', false);
+                                    
+                                    echo '</div>';
+                                }
+
+                            }; ?>
+                        </div>
 
                         <hr class="beca_divider" />
 
